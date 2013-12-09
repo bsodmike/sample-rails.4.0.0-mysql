@@ -9,17 +9,17 @@ preload_app true
 # Restart any workers that haven't responded in 30 seconds
 timeout 30
 
-working_directory '/opt/apps/demo/current'
+working_directory '/opt/apps/demo/deploy/current'
 
 # Listen on a Unix data socket
-pid '/opt/apps/demo/shared/pids/unicorn.pid'
-listen "/opt/apps/demo/tmp/sockets/demo.sock", :backlog => 2048
+pid '/opt/apps/demo/deploy/shared/pids/unicorn.pid'
+listen "/opt/apps/demo/deploy/tmp/sockets/demo.sock", :backlog => 2048
 
-stderr_path '/opt/apps/demo/shared/log/unicorn.log'
-stdout_path '/opt/apps/demo/shared/log/unicorn.log'
+stderr_path '/opt/apps/demo/deploy/shared/log/unicorn.log'
+stdout_path '/opt/apps/demo/deploy/shared/log/unicorn.log'
 
 before_exec do |server|
-  ENV["BUNDLE_GEMFILE"] = "/opt/apps/demo/current/Gemfile"
+  ENV["BUNDLE_GEMFILE"] = "/opt/apps/demo/deploy/current/Gemfile"
 end
 
 before_fork do |server, worker|
@@ -34,7 +34,7 @@ before_fork do |server, worker|
   #
   # Using this method we get 0 downtime deploys.
 
-  old_pid = '/opt/apps/demo/shared/pids/unicorn.pid.oldbin'
+  old_pid = '/opt/apps/demo/deploy/shared/pids/unicorn.pid.oldbin'
 
   if File.exists?(old_pid) && server.pid != old_pid
     begin
